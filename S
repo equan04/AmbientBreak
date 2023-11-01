@@ -1,0 +1,96 @@
+use_bpm 150
+
+define :fill do |d|
+  density d do
+    sample :hat_bdu
+    sleep 1
+  end
+end
+
+#drumline1
+a = [
+  [1,0,1,0, 2,0,1,2, 1,2,1,0, 2,1,1,2],
+  [1,0,1,0, 2,0,1,2, 1,2,1,1, 2,0,1,2],
+  [1,0,1,0, 2,0,1,2, 1,2,1,0, 2,1,1,2],
+  [1,1,1,1, 2,2,1,1, 2,2,1,0, 2,0,3,3]
+]
+
+#drumline2
+b = [
+  [1,1,1,1, 2,0,1,2, 1,1,1,0, 2,1,2,2],
+  [1,0,1,0, 2,0,1,2, 1,2,1,1, 2,0,1,2],
+  [1,0,0,0, 1,0,0,0, 2,0,1,0, 2,0,1,2],
+  [1,0,2,1, 2,2,3,3, 2,2,1,0, 3,0,1,1]
+]
+
+live_loop :drums do
+  4.times do |j|
+    16.times do |i|
+      sample :drum_bass_hard if a[j][i] == 1
+      sample :sn_dolf if a[j][i] == 2
+      sample :drum_cymbal_open if a[j][i] == 3
+      sample :drum_splash_hard, amp: 0.7 if (i % 4 == 0 && j != 2)
+      sleep 0.25
+    end
+  end
+end
+
+live_loop :hats, sync: :drums do
+  fill (ring, 1, 1, 1, 4, 6, 4, 8, 4, 12, 4, 8).choose
+end
+
+live_loop :synth1 do
+  use_synth :tech_saws
+  play 40, release: 32
+  sleep 16
+  play 43, release: 32
+  sleep 16
+  play 38, release: 32
+  sleep 16
+  play 35, release: 32
+  sleep 16
+end
+
+live_loop :synth2 do
+  use_synth :tech_saws
+  play 55, release: 32
+  sleep 16
+  play 58, release: 32
+  sleep 16
+  play 53, release: 32
+  sleep 16
+  play 52, release: 32
+  sleep 16
+end
+
+##| live_loop :ambient do
+##|   use_synth :tb303
+##|   play 72, release: 8
+##|   play 75, release: 8
+##|   play 79, release: 8
+##|   sleep 8
+##|   play 70, release: 8
+##|   play 74, release: 8
+##|   play 79, release: 8
+##|   sleep 8
+##|   play 68, release: 8
+##|   play 72, release: 8
+##|   play 75, release: 8
+##|   sleep 8
+##|   play 70, release: 8
+##|   play 74, release: 8
+##|   play 79, release: 8
+##|   sleep 8
+##|   play 68, release: 8
+##|   play 72, release: 8
+##|   play 75, release: 8
+##|   sleep 8
+##| end
+
+##| live_loop :bass do
+##|   use_synth :chipbass
+##|   play 48, release: 20
+##|   sleep 16
+##|   play 51, release: 20
+##|   sleep 16
+##| end
